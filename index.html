@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SR Market | Tu estilo, siempre contigo</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+font-family:Arial,sans-serif;
+background:#fff9fb;
+color:#292329;
+line-height:1.5
+}
+
+header{
+background:white;
+padding:18px 5%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+position:sticky;
+top:0;
+z-index:10;
+box-shadow:0 2px 12px #00000012
+}
+
+.logo{
+font-size:28px;
+font-weight:800;
+letter-spacing:.5px
+}
+
+.logo span{color:#d94d86}
+
+nav a{
+text-decoration:none;
+color:#333;
+margin-left:18px;
+font-size:14px
+}
+
+.hero{
+margin:20px auto;
+width:90%;
+max-width:1100px;
+padding:55px 25px;
+border-radius:28px;
+text-align:center;
+background:linear-gradient(135deg,#ffe6ef,#fff,#f9edf4);
+box-shadow:0 8px 30px #00000010
+}
+
+.hero h1{
+font-size:48px;
+margin-bottom:8px
+}
+
+.hero h1 span{color:#d94d86}
+
+.hero p{
+font-size:18px;
+margin:8px auto;
+max-width:600px
+}
+
+.tagline{
+font-style:italic;
+color:#a43b68;
+font-size:20px
+}
+
+.buttons{
+margin-top:25px;
+display:flex;
+justify-content:center;
+gap:12px;
+flex-wrap:wrap
+}
+
+.btn{
+display:inline-block;
+padding:13px 22px;
+border-radius:30px;
+text-decoration:none;
+font-weight:bold
+}
+
+.whatsapp{
+background:#25d366;
+color:white
+}
+
+.facebook{
+background:#1877f2;
+color:white
+}
+
+section{
+width:90%;
+max-width:1100px;
+margin:45px auto
+}
+
+.title{
+text-align:center;
+font-size:32px;
+margin-bottom:25px
+}
+
+.categories{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+gap:14px
+}
+
+.category{
+background:white;
+padding:22px 10px;
+text-align:center;
+border-radius:18px;
+box-shadow:0 5px 20px #0000000d;
+font-weight:bold
+}
+
+.products{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+gap:20px
+}
+
+.card{
+background:white;
+border-radius:18px;
+overflow:hidden;
+box-shadow:0 5px 20px #00000010;
+padding-bottom:18px
+}
+
+.product-image{
+height:180px;
+background:#f7edf2;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:50px
+}
+
+.card-content{padding:16px}
+
+.card h3{
+font-size:18px;
+margin-bottom:5px
+}
+
+.price{
+font-size:20px;
+font-weight:bold;
+color:#d94d86;
+margin:8px 0 14px
+}
+
+.card .btn{
+width:100%;
+text-align:center;
+padding:11px
+}
+
+.contact{
+background:#fff;
+border-radius:25px;
+padding:35px 20px;
+text-align:center;
+box-shadow:0 5px 20px #0000000d
+}
+
+footer{
+background:#292329;
+color:white;
+text-align:center;
+padding:30px 15px;
+margin-top:50px
+}
+
+footer a{color:white}
+
+@media(max-width:600px){
+.hero h1{font-size:36px}
+nav{display:none}
+.products{grid-template-columns:repeat(2,1fr)}
+.product-image{height:145px}
+.card-content{padding:12px}
+.card h3{font-size:15px}
+.price{font-size:17px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo">SR <span>Market</span></div>
+
+<nav>
+<a href="#inicio">Inicio</a>
+<a href="#categorias">Categorías</a>
+<a href="#productos">Productos</a>
+<a href="#contacto">Contacto</a>
+</nav>
+</header>
+
+<main>
+
+<div class="hero" id="inicio">
+<h1>SR <span>Market</span> ❤️</h1>
+<div class="tagline">Tu estilo, siempre contigo</div>
+
+<p>
+Todo lo que necesitas, en un solo lugar.
+Belleza, cuidado personal, hogar, accesorios y mucho más.
+</p>
+
+<div class="buttons">
+<a class="btn whatsapp"
+href="https://wa.me/53653988"
+target="_blank">
+💬 Escríbenos por WhatsApp
+</a>
+
+<a class="btn facebook"
+href="https://www.facebook.com/share/1gX2SUVs39/"
+target="_blank">
+📘 Visita nuestra página
+</a>
+</div>
+</div>
+
+<section id="categorias">
+<h2 class="title">✨ Categorías</h2>
+
+<div class="categories">
+<div class="category">💄<br>Belleza</div>
+<div class="category">🧴<br>Cuidado personal</div>
+<div class="category">💇‍♀️<br>Accesorios</div>
+<div class="category">🏠<br>Hogar</div>
+<div class="category">🎒<br>Niños</div>
+<div class="category">🛍️<br>Mucho más</div>
+</div>
+</section>
+
+<section id="productos">
+
+<h2 class="title">🛍️ Nuestros productos</h2>
+
+<div class="products">
+
+<div class="card">
+<div class="product-image">🦟</div>
+<div class="card-content">
+<h3>Espirales antimosquito</h3>
+<p>Caja de 10 unidades.</p>
+<div class="price">1,100 pesos</div>
+<a class="btn whatsapp" href="https://wa.me/53653988?text=Hola%20SR%20Market,%20quiero%20comprar%20espirales%20antimosquito" target="_blank">Consultar</a>
+</div>
+</div>
+
+<div class="card">
+<div class="product-image">💇‍♀️</div>
+<div class="card-content">
+<h3>Liguitas para el pelo</h3>
+<div class="price">300 pesos</div>
+<a class="btn whatsapp" href="https://wa.me/53653988?text=Hola%20SR%20Market,%20quiero%20información%20sobre%20las%20liguitas" target="_blank">Consultar</a>
+</div>
+</div>
+
+<div class="card">
+<div class="product-image">📎</div>
+<div class="card-content">
+<h3>Hebillas para el cabello</h3>
+<div class="price">250–300 pesos</div>
+<a class="btn whatsapp" href="https://wa.me/53653988?text=Hola%20SR%20Market,%20quiero%20información%20sobre%20las%20hebillas" target="_blank">Consultar</a>
+</div>
+</div>
+
+<div class="card">
+<div class="product-image">✂️</div>
+<div class="card-content">
+<h3>Cortaúñas</h3>
+<div class="price">550 pesos</div>
+<a class="btn whatsapp" href="https://wa.me/53653988?text=Hola%20SR%20Market,%20quiero%20comprar%20un%20cortaúñas" target="_blank">Consultar</a>
+</div>
+</div>
+
+<div class="card">
+<div class="product-image">🧺</div>
+<div class="card-content">
+<h3>Alfombras reversibles</h3>
+<div class="price">750 pesos</div>
+<a class="btn whatsapp" href="https://wa.me/53653988?text=Hola%20SR%20Market,%20quiero%20información%20sobre%20las%20alfombras" target="_blank">Consultar</a>
+</div>
+</div>
+
+<div class="card">
+<div class="product-image">🎒</div>
+<div class="card-content">
+<h3>Mochilas infantiles</h3>
+<div class="price">2,500 pesos</div>
+<a class="btn whatsapp" href="https://wa.me/53653988?text=Hola%20SR%20Market,%20quiero%20información%20sobre%20las%20mochilas" target="_blank">Consultar</a>
+</div>
+</div>
+
+<div class="card">
+<div class="product-image">🧴</div>
+<div class="card-content">
+<h3>Kit facial Aloe Vera</h3>
+<div class="price">4,500 pesos</div>
+<a class="btn whatsapp" href="https://wa.me/53653988?text=Hola%20SR%20Market,%20quiero%20el%20kit%20Aloe%20Vera" target="_blank">Consultar</a>
+</div>
+</div>
+
+<div class="card">
+<div class="product-image">🍊</div>
+<div class="card-content">
+<h3>Kit Vitamina C</h3>
+<div class="price">5,000 pesos</div>
+<a class="btn whatsapp" href="https://wa.me/53653988?text=Hola%20SR%20Market,%20quiero%20el%20kit%20Vitamina%20C" target="_blank">Consultar</a>
+</div>
+</div>
+
+<div class="card">
+<div class="product-image">✨</div>
+<div class="card-content">
+<h3>Kit Whitening Skin</h3>
+<div class="price">4,500 pesos</div>
+<a class="btn whatsapp" href="https://wa.me/53653988?text=Hola%20SR%20Market,%20quiero%20el%20kit%20Whitening%20Skin" target="_blank">Consultar</a>
+</div>
+</div>
+
+<div class="card">
+<div class="product-image">💇‍♀️</div>
+<div class="card-content">
+<h3>Cremas 2 en 1</h3>
+<p>Para todo tipo de cabello.</p>
+<div class="price">4,200 pesos</div>
+<a class="btn whatsapp" href="https://wa.me/53653988?text=Hola%20SR%20Market,%20quiero%20información%20sobre%20las%20cremas%202%20en%201" target="_blank">Consultar</a>
+</div>
+</div>
+
+<div class="card">
+<div class="product-image">🌸</div>
+<div class="card-content">
+<h3>Perfumes con llavero</h3>
+<p>30 ml</p>
+<div class="price">2,000 pesos</div>
+<a class="btn whatsapp" href="https://wa.me/53653988?text=Hola%20SR%20Market,%20quiero%20un%20perfume%20con%20llavero" target="_blank">Consultar</a>
+</div>
+</div>
+
+<div class="card">
+<div class="product-image">☕</div>
+<div class="card-content">
+<h3>Café del Tostadero</h3>
+<p>125 g</p>
+<div class="price">400 pesos</div>
+<a class="btn whatsapp" href="https://wa.me/53653988?text=Hola%20SR%20Market,%20quiero%20café%20del%20Tostadero" target="_blank">Consultar</a>
+</div>
+</div>
+
+<div class="card">
+<div class="product-image">🧼</div>
+<div class="card-content">
+<h3>Toallitas Doxa</h3>
+<div class="price">250 pesos</div>
+<a class="btn whatsapp" href="https://wa.me/53653988?text=Hola%20SR%20Market,%20quiero%20toallitas%20Doxa" target="_blank">Consultar</a>
+</div>
+</div>
+
+<div class="card">
+<div class="product-image">🎨</div>
+<div class="card-content">
+<h3>Tintes Fantasía Nevada</h3>
+<div class="price">750 pesos</div>
+<a class="btn whatsapp" href="https://wa.me/53653988?text=Hola%20SR%20Market,%20quiero%20un%20tinte%20Fantasía%20Nevada" target="_blank">Consultar</a>
+</div>
+</div>
+
+<div class="card">
+<div class="product-image">🛁</div>
+<div class="card-content">
+<h3>Juegos de alfombra para baño</h3>
+<p>3 piezas</p>
+<div class="price">5,000 pesos</div>
+<a class="btn whatsapp" href="https://wa.me/53653988?text=Hola%20SR%20Market,%20quiero%20un%20juego%20de%20alfombras%20para%20baño" target="_blank">Consultar</a>
+</div>
+</div>
+
+<div class="card">
+<div class="product-image">🦟</div>
+<div class="card-content">
+<h3>Repelente para mosquitos</h3>
+<div class="price">1,200 pesos</div>
+<a class="btn whatsapp" href="https://wa.me/53653988?text=Hola%20SR%20Market,%20quiero%20el%20repelente%20para%20mosquitos" target="_blank">Consultar</a>
+</div>
+</div>
+
+<div class="card">
+<div class="product-image">🍴</div>
+<div class="card-content">
+<h3>Procesador de alimentos</h3>
+<p>500 ml</p>
+<div class="price">3,000 pesos</div>
+<a class="btn whatsapp" href="https://wa.me/53653988?text=Hola%20SR%20Market,%20quiero%20el%20procesador%20de%20alimentos" target="_blank">Consultar</a>
+</div>
+</div>
+
+<div class="card">
+<div class="product-image">🎁</div>
+<div class="card-content">
+<h3>Sets de regalo para mujer y hombre</h3>
+<div class="price">3,500 pesos</div>
+<a class="btn whatsapp" href="https://wa.me/53653988?text=Hola%20SR%20Market,%20quiero%20información%20sobre%20los%20sets%20de%20regalo" target="_blank">Consultar</a>
+</div>
+</div>
+
+</div>
+</section>
+
+<section id="contacto">
+
+<div class="contact">
+<h2>💗 ¿Quieres hacer un pedido?</h2>
+
+<p>Escríbenos y te ayudamos a encontrar lo que buscas.</p>
+
+<div class="buttons">
+
+<a class="btn whatsapp"
+href="https://wa.me/53653988"
+target="_blank">
+💬 WhatsApp: 53 65 39 88
+</a>
+
+<a class="btn facebook"
+href="https://www.facebook.com/share/1gX2SUVs39/"
+target="_blank">
+📘 Facebook: SR Market
+</a>
+
+</div>
+
+<p style="margin-top:20px">📍 Camagüey, Cuba</p>
+</div>
+
+</section>
+
+</main>
+
+<footer>
+<strong>SR Market</strong>
+<p>Tu estilo, siempre contigo ❤️</p>
+<p>Compra • Venta de artículos varios</p>
+</footer>
+
+</body>
+  </html>
