@@ -56,12 +56,15 @@ const modal=document.getElementById('product-modal'),dimg=document.getElementByI
   function catKey(v){const s=String(v||'otros').toLowerCase();return ({'belleza':'belleza','cuidado personal':'cuidado','cuidado':'cuidado','accesorios':'accesorios','hogar':'hogar','niños':'ninos','ninos':'ninos','alimentos':'alimentos','otros':'otros'})[s]||s;}
   const {data,error}=await client.from('products').select('id,name,price,category,description,image_url,active').eq('active',true).order('created_at',{ascending:false});
   if(error||!data||data.length===0)return;
-  grid.innerHTML=data.map(p=>{
+  const existingNames=new Set([...grid.querySelectorAll('.card h3')].map(h=>h.textContent.trim().toLowerCase()));
+  const newProducts=data.filter(p=>!existingNames.has(String(p.name||'').trim().toLowerCase()));
+  if(newProducts.length===0)return;
+  grid.insertAdjacentHTML('beforeend',newProducts.map(p=>{
     const cat=catKey(p.category), img=p.image_url?'<img src="'+esc(p.image_url)+'" alt="'+esc(p.name)+'" loading="lazy">':'<div class="placeholder"><span class="symbol">🛍️</span><small>SR Market</small></div>';
     const price=Number(p.price)===0?'Consultar precio':Number(p.price).toLocaleString('es-ES',{maximumFractionDigits:2})+' pesos';
     const msg=encodeURIComponent('Hola SR Market, quiero información sobre '+p.name);
     return '<article class="card" data-category="'+esc(cat)+'" data-product-id="'+esc(p.id)+'" data-name="'+esc(p.name)+'" data-price="'+esc(price)+'" data-description="'+esc(p.description||'')+'" data-image="'+esc(p.image_url||'')+'"><div class="photo">'+img+'</div><div class="card-content"><h3>'+esc(p.name)+'</h3><div class="price">'+esc(price)+'</div><a class="btn whatsapp" href="https://wa.me/53653988?text='+msg+'" target="_blank" rel="noopener">Consultar por WhatsApp</a></div></article>';
-  }).join('');
+  }).join(''));
   let current='todos';
   function filterProducts(f){current=f;let count=0;grid.querySelectorAll('.card').forEach(c=>{const show=f==='todos'||c.dataset.category===f;c.hidden=!show;if(show)count++});document.querySelectorAll('[data-filter]').forEach(b=>{const on=b.dataset.filter===f;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on))});if(note)note.textContent=f==='todos'?'Mostrando todos los productos. Toca una categoría para ver sus artículos.':count+' producto(s) en la categoría '+(categoryLabels[f]||f)+'.';}
   document.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>filterProducts(b.dataset.filter)));
