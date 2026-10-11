@@ -109,6 +109,7 @@ const modal=document.getElementById('product-modal'),dimg=document.getElementByI
 
   function catKey(v){const s=String(v||'otros').toLowerCase();return ({'belleza':'belleza','cuidado personal':'cuidado','cuidado':'cuidado','accesorios':'accesorios','hogar':'hogar','niños':'ninos','ninos':'ninos','moda':'moda','alimentos':'alimentos','otros':'otros'})[s]||s;}
   let {data,error}=await client.from('products').select('id,name,legacy_name,price,category,description,image_url,image_urls,active').order('created_at',{ascending:false});
+  if(error){let fallback=await client.from('products').select('id,name,legacy_name,price,category,description,image_url,active').order('created_at',{ascending:false});data=fallback.data;error=fallback.error;}
   if(error&&String(error.message||'').includes('legacy_name')){const fallback=await client.from('products').select('id,name,price,category,description,image_url,active').order('created_at',{ascending:false});data=fallback.data;error=fallback.error;}
   if(error||!data||data.length===0)return;
   const existingCards=[...grid.querySelectorAll('.card')];
