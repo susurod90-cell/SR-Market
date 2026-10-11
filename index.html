@@ -54,19 +54,31 @@ const modal=document.getElementById('product-modal'),dimg=document.getElementByI
   const categoryLabels={todos:'todos los productos',belleza:'Belleza',cuidado:'Cuidado personal',accesorios:'Accesorios',hogar:'Hogar',ninos:'Niños',alimentos:'Alimentos',otros:'Otros'};
   const esc=(v)=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   function catKey(v){const s=String(v||'otros').toLowerCase();return ({'belleza':'belleza','cuidado personal':'cuidado','cuidado':'cuidado','accesorios':'accesorios','hogar':'hogar','niños':'ninos','ninos':'ninos','alimentos':'alimentos','otros':'otros'})[s]||s;}
-  const {data,error}=await client.from('products').select('id,name,price,category,description,image_url,active').eq('active',true).order('created_at',{ascending:false});
+  const {data,error}=await client.from('products').select('id,name,price,category,description,image_url,active').order('created_at',{ascending:false});
   if(error||!data||data.length===0)return;
-  const existingNames=new Set([...grid.querySelectorAll('.card h3')].map(h=>h.textContent.trim().toLowerCase()));
-  const newProducts=data.filter(p=>!existingNames.has(String(p.name||'').trim().toLowerCase()));
-  if(newProducts.length===0)return;
-  grid.insertAdjacentHTML('beforeend',newProducts.map(p=>{
-    const cat=catKey(p.category), img=p.image_url?'<img src="'+esc(p.image_url)+'" alt="'+esc(p.name)+'" loading="lazy">':'<div class="placeholder"><span class="symbol">🛍️</span><small>SR Market</small></div>';
+  const existingCards=[...grid.querySelectorAll('.card')];
+  const byName=new Map(existingCards.map(card=>[card.querySelector('h3')?.textContent.trim().toLowerCase(),card]));
+  const newProducts=[];
+  data.forEach(p=>{
+    const key=String(p.name||'').trim().toLowerCase(), cat=catKey(p.category);
     const price=Number(p.price)===0?'Consultar precio':Number(p.price).toLocaleString('es-ES',{maximumFractionDigits:2})+' pesos';
-    const msg=encodeURIComponent('Hola SR Market, quiero información sobre '+p.name);
-    return '<article class="card" data-category="'+esc(cat)+'" data-product-id="'+esc(p.id)+'" data-name="'+esc(p.name)+'" data-price="'+esc(price)+'" data-description="'+esc(p.description||'')+'" data-image="'+esc(p.image_url||'')+'"><div class="photo">'+img+'</div><div class="card-content"><h3>'+esc(p.name)+'</h3><div class="price">'+esc(price)+'</div><a class="btn whatsapp" href="https://wa.me/53653988?text='+msg+'" target="_blank" rel="noopener">Consultar por WhatsApp</a></div></article>';
-  }).join(''));
+    const existing=byName.get(key);
+    if(existing){
+      existing.dataset.productId=p.id; existing.dataset.name=p.name; existing.dataset.price=price;
+      existing.dataset.description=p.description||''; existing.dataset.category=cat; existing.dataset.inactive=p.active?'false':'true';
+      existing.querySelector('.price').textContent=price;
+      if(p.image_url){existing.dataset.image=p.image_url;existing.querySelector('.photo').innerHTML='<img src="'+esc(p.image_url)+'" alt="'+esc(p.name)+'" loading="lazy">';}
+      else{const oldImage=existing.querySelector('.photo img');existing.dataset.image=oldImage?oldImage.src:'';}
+      existing.hidden=!p.active;
+    }else if(p.active){
+      const img=p.image_url?'<img src="'+esc(p.image_url)+'" alt="'+esc(p.name)+'" loading="lazy">':'<div class="placeholder"><span class="symbol">🛍️</span><small>SR Market</small></div>';
+      const msg=encodeURIComponent('Hola SR Market, quiero información sobre '+p.name);
+      newProducts.push('<article class="card" data-category="'+esc(cat)+'" data-product-id="'+esc(p.id)+'" data-name="'+esc(p.name)+'" data-price="'+esc(price)+'" data-description="'+esc(p.description||'')+'" data-image="'+esc(p.image_url||'')+'" data-inactive="false"><div class="photo">'+img+'</div><div class="card-content"><h3>'+esc(p.name)+'</h3><div class="price">'+esc(price)+'</div><a class="btn whatsapp" href="https://wa.me/53653988?text='+msg+'" target="_blank" rel="noopener">Consultar por WhatsApp</a></div></article>');
+    }
+  });
+  if(newProducts.length)grid.insertAdjacentHTML('beforeend',newProducts.join(''));
   let current='todos';
-  function filterProducts(f){current=f;let count=0;grid.querySelectorAll('.card').forEach(c=>{const show=f==='todos'||c.dataset.category===f;c.hidden=!show;if(show)count++});document.querySelectorAll('[data-filter]').forEach(b=>{const on=b.dataset.filter===f;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on))});if(note)note.textContent=f==='todos'?'Mostrando todos los productos. Toca una categoría para ver sus artículos.':count+' producto(s) en la categoría '+(categoryLabels[f]||f)+'.';}
+  function filterProducts(f){current=f;let count=0;grid.querySelectorAll('.card').forEach(card=>{const show=card.dataset.inactive!=='true'&&(f==='todos'||card.dataset.category===f);card.hidden=!show;if(show)count++});buttons.forEach(b=>{const on=b.dataset.filter===f;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on))});if(note)note.textContent=f==='todos'?'Mostrando todos los productos. Toca una categoría para ver sus artículos.':count+' producto(s) en la categoría '+(categoryLabels[f]||f)+'.';}
   document.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>filterProducts(b.dataset.filter)));
   const modal=document.getElementById('product-modal'),dimg=document.getElementById('detail-image'),dtitle=document.getElementById('detail-title'),dprice=document.getElementById('detail-price'),dstock=document.getElementById('detail-stock'),ddesc=document.getElementById('detail-description'),dspecs=document.getElementById('detail-specs'),dwa=document.getElementById('detail-whatsapp');
   function openProduct(c){const name=c.dataset.name,price=c.dataset.price,image=c.dataset.image,description=c.dataset.description;dtitle.textContent=name;dprice.textContent=price;dstock.hidden=true;dimg.replaceChildren();if(image){const im=document.createElement('img');im.src=image;im.alt=name;dimg.append(im)}else{const s=document.createElement('span');s.className='symbol';s.textContent='🛍️';dimg.append(s)}ddesc.textContent=description||'Consulta los detalles y la disponibilidad directamente con SR Market.';dspecs.replaceChildren();dwa.href='https://wa.me/53653988?text='+encodeURIComponent('Hola SR Market, quisiera conocer más detalles de: '+name);modal.classList.add('open');document.body.style.overflow='hidden';}
