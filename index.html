@@ -56,7 +56,8 @@ const modal=document.getElementById('product-modal'),dimg=document.getElementByI
   const categoryLabels={todos:'todos los productos',belleza:'Belleza',cuidado:'Cuidado personal',accesorios:'Accesorios',hogar:'Hogar',ninos:'Niños',alimentos:'Alimentos',otros:'Otros'};
   const esc=(v)=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   function catKey(v){const s=String(v||'otros').toLowerCase();return ({'belleza':'belleza','cuidado personal':'cuidado','cuidado':'cuidado','accesorios':'accesorios','hogar':'hogar','niños':'ninos','ninos':'ninos','moda':'moda','alimentos':'alimentos','otros':'otros'})[s]||s;}
-  const {data,error}=await client.from('products').select('id,name,legacy_name,price,category,description,image_url,active').order('created_at',{ascending:false});
+  let {data,error}=await client.from('products').select('id,name,legacy_name,price,category,description,image_url,active').order('created_at',{ascending:false});
+  if(error&&String(error.message||'').includes('legacy_name')){const fallback=await client.from('products').select('id,name,price,category,description,image_url,active').order('created_at',{ascending:false});data=fallback.data;error=fallback.error;}
   if(error||!data||data.length===0)return;
   const existingCards=[...grid.querySelectorAll('.card')];
   const byName=new Map(existingCards.map(card=>[card.querySelector('h3')?.textContent.trim().toLowerCase(),card]));
