@@ -56,17 +56,17 @@ const modal=document.getElementById('product-modal'),dimg=document.getElementByI
   const categoryLabels={todos:'todos los productos',belleza:'Belleza',cuidado:'Cuidado personal',accesorios:'Accesorios',hogar:'Hogar',ninos:'Niños',alimentos:'Alimentos',otros:'Otros'};
   const esc=(v)=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   function catKey(v){const s=String(v||'otros').toLowerCase();return ({'belleza':'belleza','cuidado personal':'cuidado','cuidado':'cuidado','accesorios':'accesorios','hogar':'hogar','niños':'ninos','ninos':'ninos','moda':'moda','alimentos':'alimentos','otros':'otros'})[s]||s;}
-  const {data,error}=await client.from('products').select('id,name,price,category,description,image_url,active').order('created_at',{ascending:false});
+  const {data,error}=await client.from('products').select('id,name,legacy_name,price,category,description,image_url,active').order('created_at',{ascending:false});
   if(error||!data||data.length===0)return;
   const existingCards=[...grid.querySelectorAll('.card')];
   const byName=new Map(existingCards.map(card=>[card.querySelector('h3')?.textContent.trim().toLowerCase(),card]));
   const newProducts=[];
   data.forEach(p=>{
-    const key=String(p.name||'').trim().toLowerCase(), cat=catKey(p.category);
+    const key=String(p.legacy_name||p.name||'').trim().toLowerCase(), cat=catKey(p.category);
     const price=Number(p.price)===0?'Consultar precio':Number(p.price).toLocaleString('es-ES',{maximumFractionDigits:2})+' pesos';
     const existing=byName.get(key);
     if(existing){
-      existing.dataset.productId=p.id; existing.dataset.name=p.name; existing.dataset.price=price;
+      existing.dataset.productId=p.id; existing.dataset.name=p.name; existing.dataset.price=price; existing.querySelector('h3').textContent=p.name;
       existing.dataset.description=p.description||''; existing.dataset.category=cat; existing.dataset.inactive=p.active?'false':'true';
       existing.querySelector('.price').textContent=price;
       if(p.image_url){existing.dataset.image=p.image_url;existing.querySelector('.photo').innerHTML='<img src="'+esc(p.image_url)+'" alt="'+esc(p.name)+'" loading="lazy">';}
