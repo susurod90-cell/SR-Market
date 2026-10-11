@@ -64,6 +64,17 @@ section{width:90%;max-width:1100px;margin:40px auto}.title{text-align:center;fon
 .official-cover{width:calc(100% + 12px);max-width:none;margin:0 -6px 8px;border-radius:12px}
 }
 
+
+/* Galería de varias fotos por producto: desliza con el dedo */
+.product-gallery{height:100%;width:100%;display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain;touch-action:pan-x pan-y}
+.product-gallery::-webkit-scrollbar{display:none}
+.product-gallery .gallery-slide{flex:0 0 100%;width:100%;height:100%;scroll-snap-align:center;display:flex;align-items:center;justify-content:center}
+.product-gallery img{width:100%;height:100%;object-fit:contain;display:block}
+.gallery-dots{position:absolute;left:0;right:0;bottom:8px;display:flex;justify-content:center;gap:5px;pointer-events:none}
+.gallery-dot{width:6px;height:6px;border-radius:99px;background:#cbbbc3;box-shadow:0 1px 4px #0002}
+.gallery-dot.active{width:16px;background:var(--pink)}
+.photo{position:relative}
+
 </style>
 </head>
 <body>
@@ -93,8 +104,11 @@ const modal=document.getElementById('product-modal'),dimg=document.getElementByI
   const note=document.getElementById('filter-note');
   const categoryLabels={todos:'todos los productos',belleza:'Belleza',cuidado:'Cuidado personal',accesorios:'Accesorios',hogar:'Hogar',ninos:'Niños',alimentos:'Alimentos',otros:'Otros'};
   const esc=(v)=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function galleryMarkup(images,name){const safe=images.map((url,i)=>'<div class="gallery-slide"><img src="'+esc(url)+'" alt="'+esc(name)+' · foto '+(i+1)+'" loading="lazy"></div>').join('');const dots=images.length>1?'<div class="gallery-dots">'+images.map((_,i)=>'<span class="gallery-dot '+(i===0?'active':'')+'"></span>').join('')+'</div>':'';return '<div class="product-gallery" aria-label="Fotos de '+esc(name)+'">'+safe+'</div>'+dots;}
+  function setupGallery(container){const scroller=container.querySelector('.product-gallery');if(!scroller)return;const dots=[...container.querySelectorAll('.gallery-dot')];if(dots.length<2)return;scroller.addEventListener('scroll',()=>{const idx=Math.round(scroller.scrollLeft/(scroller.clientWidth||1));dots.forEach((d,i)=>d.classList.toggle('active',i===idx))},{passive:true});}
+
   function catKey(v){const s=String(v||'otros').toLowerCase();return ({'belleza':'belleza','cuidado personal':'cuidado','cuidado':'cuidado','accesorios':'accesorios','hogar':'hogar','niños':'ninos','ninos':'ninos','moda':'moda','alimentos':'alimentos','otros':'otros'})[s]||s;}
-  let {data,error}=await client.from('products').select('id,name,legacy_name,price,category,description,image_url,active').order('created_at',{ascending:false});
+  let {data,error}=await client.from('products').select('id,name,legacy_name,price,category,description,image_url,image_urls,active').order('created_at',{ascending:false});
   if(error&&String(error.message||'').includes('legacy_name')){const fallback=await client.from('products').select('id,name,price,category,description,image_url,active').order('created_at',{ascending:false});data=fallback.data;error=fallback.error;}
   if(error||!data||data.length===0)return;
   const existingCards=[...grid.querySelectorAll('.card')];
@@ -108,16 +122,20 @@ const modal=document.getElementById('product-modal'),dimg=document.getElementByI
       existing.dataset.productId=p.id; existing.dataset.name=p.name; existing.dataset.price=price; existing.querySelector('h3').textContent=p.name;
       existing.dataset.description=p.description||''; existing.dataset.category=cat; existing.dataset.inactive=p.active?'false':'true';
       existing.querySelector('.price').textContent=price;
-      if(p.image_url){existing.dataset.image=p.image_url;existing.querySelector('.photo').innerHTML='<img src="'+esc(p.image_url)+'" alt="'+esc(p.name)+'" loading="lazy">';}
+      const galleryImages=Array.isArray(p.image_urls)&&p.image_urls.length?p.image_urls:(p.image_url?[p.image_url]:[]);
+      existing.dataset.images=JSON.stringify(galleryImages);existing.dataset.image=galleryImages[0]||'';
+      if(galleryImages.length){existing.querySelector('.photo').innerHTML=galleryMarkup(galleryImages,p.name);setupGallery(existing.querySelector('.photo'));}
       else{const oldImage=existing.querySelector('.photo img');existing.dataset.image=oldImage?oldImage.src:'';}
       existing.hidden=!p.active;
     }else if(p.active){
-      const img=p.image_url?'<img src="'+esc(p.image_url)+'" alt="'+esc(p.name)+'" loading="lazy">':'<div class="placeholder"><span class="symbol">🛍️</span><small>SR Market</small></div>';
+      const galleryImages=Array.isArray(p.image_urls)&&p.image_urls.length?p.image_urls:(p.image_url?[p.image_url]:[]);
+      const img=galleryImages.length?galleryMarkup(galleryImages,p.name):'<div class="placeholder"><span class="symbol">🛍️</span><small>SR Market</small></div>';
       const msg=encodeURIComponent('Hola SR Market, quiero información sobre '+p.name);
       newProducts.push('<article class="card" data-category="'+esc(cat)+'" data-product-id="'+esc(p.id)+'" data-name="'+esc(p.name)+'" data-price="'+esc(price)+'" data-description="'+esc(p.description||'')+'" data-image="'+esc(p.image_url||'')+'" data-inactive="false"><div class="photo">'+img+'</div><div class="card-content"><h3>'+esc(p.name)+'</h3><div class="price">'+esc(price)+'</div><a class="btn whatsapp" href="https://wa.me/53653988?text='+msg+'" target="_blank" rel="noopener">Consultar por WhatsApp</a></div></article>');
     }
   });
   if(newProducts.length)grid.insertAdjacentHTML('beforeend',newProducts.join(''));
+  grid.querySelectorAll('.photo').forEach(setupGallery);
   let current='todos';let searchTerm='';const searchInput=document.getElementById('product-search');
   function filterProducts(f){current=f;let count=0;grid.querySelectorAll('.card').forEach(card=>{const text=[card.querySelector('h3')?.textContent,card.dataset.description].join(' ').toLowerCase();const matchesSearch=!searchTerm||text.includes(searchTerm);const show=card.dataset.inactive!=='true'&&(f==='todos'||card.dataset.category===f)&&matchesSearch;card.hidden=!show;if(show)count++});buttons.forEach(b=>{const on=b.dataset.filter===f;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on))});if(note)note.textContent=searchTerm?count+' producto(s) encontrados.':(f==='todos'?'Mostrando todos los productos. Toca una categoría para ver sus artículos.':count+' producto(s) en la categoría '+(categoryLabels[f]||f)+'.');}
   document.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>filterProducts(b.dataset.filter)));
