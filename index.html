@@ -330,6 +330,82 @@ footer a{color:#94672d!important}
 #contacto .hero{border-color:#e8ccd3!important;background:#fbf2f3!important}
 .detail-close{background:var(--sr-rose-light)!important;color:var(--sr-rose-dark)!important}
 a:focus-visible,button:focus-visible{outline-color:var(--sr-gold)!important}
+
+/* Ajuste de inicio: jerarquía visual más clara y acabado de boutique */
+:root{--pink:#b46d86;--ink:#302821;--soft:#faf7f0;--muted:#766b60;--line:#e9dfd1}
+body{background:#faf7f0;color:#302821}
+.site-header{position:sticky;top:0;z-index:20;background:rgba(255,253,248,.97);backdrop-filter:blur(12px);border-bottom:1px solid #eadfce;box-shadow:0 4px 18px #3827180a}
+.brand-words em,.hero-v2 h1 span,.hero-script span{color:#b46d86}
+.header-search{border-radius:999px;background:#fff;border-color:#e7ddcf}
+.header-whatsapp{color:#a45d76}
+.hero-v2{margin:26px auto 38px;max-width:1180px;padding:clamp(22px,4vw,48px);border:1px solid #e7dac7;border-radius:18px;background:linear-gradient(120deg,#f4ecdf 0%,#fffdf8 54%,#f5e8e8 100%);box-shadow:0 16px 38px #4734210c;gap:24px}
+.hero-copy{padding-bottom:10px}
+.eyebrow{display:inline-block;padding:8px 12px;border-radius:999px;background:#f1e4d6;color:#80633e;font-size:11px;letter-spacing:.14em}
+.hero-v2 h1{font-size:clamp(42px,5.6vw,68px);line-height:1.02;margin:16px 0 8px}
+.hero-script{font-size:clamp(23px,2.7vw,34px)}
+.hero-line{font-size:16px;margin-top:20px}
+.hero-description{font-size:15px;line-height:1.8;max-width:440px}
+.hero-v2 .buttons{margin-top:22px}
+.hero-v2 .btn{border-radius:999px;padding:13px 19px;box-shadow:none}
+.hero-v2 .btn.whatsapp,.products .btn.whatsapp{background:#b46d86;color:#fff}
+.hero-v2 .btn.facebook{background:#fff;color:#6c5749;border:1px solid #e1d2c0}
+.hero-showcase{min-height:310px}
+.showcase-orbit{width:min(24vw,280px);height:min(24vw,280px);border:1px solid #e5d3c0}
+.showcase-tile{border-radius:13px}
+.hero-pink-note{background:#b46d86;border-radius:7px 15px 7px 15px}
+.hero-benefits{margin-top:8px;padding:20px 0 2px;border-top:1px solid #e7dac7}
+.hero-benefits>div>span{background:#f1e3e5;color:#a45d76}
+section{max-width:1180px}
+section#categorias{margin-top:44px}
+.title{text-align:left;font-size:clamp(25px,3vw,34px);margin-bottom:8px}
+#categorias .title:after,#productos .title:after{content:"";display:block;width:48px;height:2px;background:#b99562;margin-top:12px}
+.categories{gap:16px;margin-top:22px}
+.category-photo{min-height:155px;border-radius:12px;box-shadow:0 5px 16px #3028210b}
+.category-photo span{font-size:18px;padding:18px}
+.category-photo:after{background:linear-gradient(0deg,#211710c9 0%,#21171005 85%)}
+#productos{margin-top:54px}
+.filter-note{text-align:left;margin:14px 0 22px}
+.products{gap:18px}
+.products .card,#featured-grid .card{border-radius:13px;border-color:#e9e0d4;background:#fff;box-shadow:0 5px 18px #30282108}
+.products .card:hover{transform:translateY(-3px);box-shadow:0 12px 25px #30282112;border-color:#d8c5ac}
+.photo{background:#f7f2e9}
+.card-content{padding:16px}
+.card h3{font-size:15px;line-height:1.45}
+.products .price,.price,.detail-price{color:#8c6b45}
+.products .btn{border-radius:999px}
+#contacto .hero{background:#f2e9dc;border:1px solid #e6d9c6;border-radius:16px;box-shadow:none;padding:28px}
+#contacto .hero h2{font-family:Georgia,serif}
+footer{background:#302821;color:#fffaf3}
+@media(max-width:850px){
+ .hero-v2{gap:12px}
+ .hero-showcase{min-height:260px}
+ .showcase-orbit{width:205px;height:205px}
+ .title{text-align:left}
+}
+@media(max-width:600px){
+ .site-header{position:relative;padding:12px 5%;gap:9px}
+ .hero-v2{margin:14px auto 28px;padding:22px 17px 0;border-radius:14px;gap:5px}
+ .hero-copy{padding-bottom:4px}
+ .hero-v2 h1{font-size:43px;line-height:1.03}
+ .hero-description{font-size:14px;line-height:1.65}
+ .hero-v2 .buttons{margin-top:17px}
+ .hero-showcase{min-height:225px;margin-top:4px}
+ .showcase-orbit{width:178px;height:178px}
+ .hero-benefits{padding:15px 0 18px;margin-top:2px}
+ .hero-benefits>div{gap:7px}
+ .categories{gap:10px;margin-top:18px}
+ .category-photo{min-height:125px}
+ .category-photo span{font-size:15px;padding:13px}
+ #productos{margin-top:38px}
+ .products{gap:10px}
+ .photo{height:clamp(160px,45vw,205px);padding:6px}
+ .card-content{padding:10px}
+ .card h3{font-size:13px}
+ .products .price{font-size:16px}
+ .products .btn{font-size:11px;padding:9px 5px}
+ #contacto .hero{padding:22px 16px}
+}
+
 </style>
 </head>
 <body>
